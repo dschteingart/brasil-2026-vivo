@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lula’s lead in the Northeast no longer offsets his losses in the South and Southeast — El Atlas</title><meta name="description" content="First-round vote margin between Lula and the Bolsonaro candidate, in millions. To the right, Lula ahead.">
+<meta property="og:title" content="Lula’s lead in the Northeast no longer offsets his losses in the South and Southeast — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g06-regiones-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo">
+<h1>Lula’s lead in the Northeast no longer offsets his losses in the South and Southeast</h1><p class="sub">First-round vote margin between Lula and the Bolsonaro candidate, in millions. To the right, Lula ahead.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE (99.94% of polling stations reported; official 2022 results). The Brazil total includes voters abroad.</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g06-regiones-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">See all charts →</a></div>
+<script>window.WEB = true;</script><script>window.LANG = 'en';</script><script src="base.js?v=3"></script><script>const D = [{"nm": "Northeast", "a": 12.965745, "b": 11.063335}, {"nm": "North", "a": 0.158469, "b": -0.464505}, {"nm": "Center-West", "a": -1.401344, "b": -2.170393}, {"nm": "South", "a": -3.118661, "b": -5.042624}, {"nm": "Southeast", "a": -2.433435, "b": -5.66345}, {"nm": "Brazil", "a": 6.187159, "b": -2.264658, "tot": true}];
+listo(() => { 
+const { svg, W, H } = lienzo();
+const lab = 200, der = 40, x0 = -7, x1 = 14, X = v => lab + (v - x0) / (x1 - x0) * (W - lab - der);
+const top = 64, bot = 50, n = D.length, paso = (H - top - bot) / (n + 0.4), bh = Math.min(paso * 0.3, 32);
+// leyenda
+[['2022', 0.42], ['2026', 1]].forEach(([nm, t], i) => { const x = lab + i * 170; el('rect', { x, y: 6, width: 22, height: 24, rx: 3, fill: mix('#FAF8F3', C.lula, t) }, svg); el('rect', { x: x + 24, y: 6, width: 22, height: 24, rx: 3, fill: mix('#FAF8F3', C.bolso, t) }, svg); T(svg, x + 56, 27, nm, { size: 23, fill: C.soft }); });
+[-5, 0, 5, 10].forEach(t => { el('line', { x1: X(t), x2: X(t), y1: top - 10, y2: H - bot + 6, stroke: t === 0 ? '#8A8579' : C.grid, 'stroke-width': t === 0 ? 2 : 1.5 }, svg);
+  T(svg, X(t), H - 12, sg(t, 0) + (t ? 'M' : ''), { size: 22, fill: C.muted, anchor: 'middle' }); });
+D.forEach((f, i) => {
+  const yc = top + paso * (i + 0.5) + (f.tot ? paso * 0.4 : 0);
+  if (f.tot) el('line', { x1: 0, x2: W, y1: yc - paso * 0.62, y2: yc - paso * 0.62, stroke: C.rule, 'stroke-width': 1.5 }, svg);
+  T(svg, lab - 18, yc + 8, f.nm, { size: 25, w: f.tot ? 800 : 600, fill: C.ink, anchor: 'end' });
+  [[f.a, 0.42, -1], [f.b, 1, 1]].forEach(([v, t, s]) => {
+    const col = mix('#FAF8F3', v >= 0 ? C.lula : C.bolso, t), y = yc + s * (bh / 2 + 2) - bh / 2;
+    const xa = X(Math.min(0, v)), xb = X(Math.max(0, v));
+    tip(el('rect', { x: xa, y, width: Math.max(2, xb - xa), height: bh, fill: col, rx: 2 }, svg), `<b>${f.nm}</b><br>2022: ${sg(f.a)} M<br>2026: ${sg(f.b)} M`);
+    T(svg, v >= 0 ? xb + 8 : xa - 8, y + bh / 2 + 8, sg(v), { size: 22, w: 700, fill: v >= 0 ? C.lula : C.bolso, anchor: v >= 0 ? 'start' : 'end', halo: 5 });
+  });
+});
+ });</script></body></html>

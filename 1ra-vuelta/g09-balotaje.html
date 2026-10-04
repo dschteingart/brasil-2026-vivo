@@ -1,0 +1,34 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Para ganar, Lula necesita más de seis de cada diez votos de los demás candidatos — El Atlas</title><meta name="description" content="Porcentaje de votos válidos en la primera vuelta y en el balotaje. En gris, los demás candidatos.">
+<meta property="og:title" content="Para ganar, Lula necesita más de seis de cada diez votos de los demás candidatos — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g09-balotaje.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">EL ATLAS · ELECCIONES BRASIL</a></div>
+<div class="marco"><div class="lienzo">
+<h1>Para ganar, Lula necesita más de seis de cada diez votos de los demás candidatos</h1><p class="sub">Porcentaje de votos válidos en la primera vuelta y en el balotaje. En gris, los demás candidatos.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Fuente:</b> TSE (escrutinio con 99,94% de las secciones y resultados oficiales de 2022). El cálculo supone que en el balotaje votan las mismas personas.</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g09-balotaje.png" download>Descargar PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">Ver todos los gráficos →</a></div>
+<script>window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = [{"nm": "2022 · primera vuelta", "l": 48.43, "o": 8.369999999999997, "b": 43.2, "bn": "Bolsonaro"}, {"nm": "2022 · balotaje", "l": 50.9, "o": 0, "b": 49.1, "bn": "Bolsonaro"}, {"nm": "2026 · primera vuelta", "l": 45.14, "o": 7.82, "b": 47.04, "bn": "Flávio", "hoy": true}];
+listo(() => { 
+const { svg, W, H } = lienzo();
+const X = v => v / 100 * W, top = 30, paso = (H - top - 160) / D.length, bh = Math.min(paso * 0.5, 100);
+el('line', { x1: X(50), x2: X(50), y1: top + 14, y2: top + paso * (D.length - 1) + 42 + bh + 4, stroke: C.ink, 'stroke-width': 2, 'stroke-dasharray': '7 5' }, svg);
+D.forEach((f, i) => {
+  const y = top + paso * i + 42;
+  T(svg, 0, y - 16, f.nm, { size: 25, w: 700, fill: C.ink });
+  [[0, f.l, C.lula, 'Lula ' + fmt(f.l) + '%'], [f.l, f.o, C.otros, f.o ? fmt(f.o) + '%' : ''], [f.l + f.o, f.b, C.bolso, f.bn + ' ' + fmt(f.b) + '%']].forEach(([a, w, col, txt], j) => {
+    if (!w) return;
+    tip(el('rect', { x: X(a), y, width: X(w) - (j < 2 && (a + w) < 100 ? 2 : 0), height: bh, fill: col }, svg), `<b>${f.nm}</b><br>${j === 1 ? LBL.otros + ' ' + fmt(f.o) + '%' : txt}`);
+    if (txt) T(svg, j === 2 ? X(a + w) - 16 : j === 0 ? X(a) + 16 : X(a + w / 2), y + bh / 2 + 9, txt, { size: j === 1 ? 22 : 26, w: 700, fill: j === 1 ? C.ink : '#FFFFFF', anchor: j === 2 ? 'end' : j === 0 ? 'start' : 'middle' });
+  });
+  if (f.hoy) {
+    // llave bajo los demás candidatos
+    const xa = X(f.l), xb = X(f.l + f.o), yb = y + bh + 14;
+    el('path', { d: `M${xa} ${yb} v10 H${xb} v-10 M${(xa + xb) / 2} ${yb + 10} v14`, fill: 'none', stroke: C.ink, 'stroke-width': 2 }, svg);
+    const need = 50 - f.l;
+    T(svg, (xa + xb) / 2, yb + 58, `Lula necesita ${fmt(need)} de estos ${fmt(f.o)} puntos`, { size: 25, w: 700, fill: C.ink, anchor: 'middle' });
+    T(svg, (xa + xb) / 2, yb + 90, `(${Math.round(100 * need / f.o)}%)`, { size: 24, fill: C.soft, anchor: 'middle' });
+  }
+});
+T(svg, X(50), top, '50%', { size: 22, w: 700, fill: C.ink, anchor: 'middle' });
+ });</script></body></html>

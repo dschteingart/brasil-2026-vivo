@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brasil 2026: escrutinio en vivo — El Atlas</title>
+<meta name="description" content="Escrutinio de la elección presidencial de Brasil 2026 en vivo: resultados por estado y municipio, una proyección del resultado final, dónde se mueve el voto respecto de 2022, de dónde sale la ventaja y cómo votan los brasileños en el exterior. Se actualiza solo.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="El Atlas · Cartografías del desarrollo">
+<meta property="og:url" content="https://dschteingart.github.io/brasil-2026-vivo/">
+<meta property="og:title" content="Brasil 2026: escrutinio en vivo — El Atlas">
+<meta property="og:description" content="Escrutinio de la elección presidencial de Brasil 2026 en vivo: resultados por estado y municipio, una proyección del resultado final, dónde se mueve el voto respecto de 2022, de dónde sale la ventaja y cómo votan los brasileños en el exterior. Se actualiza solo.">
+<meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/thumbs/og-balotaje-2022.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Brasil 2026: escrutinio en vivo — El Atlas">
+<meta name="twitter:description" content="Escrutinio de la elección presidencial de Brasil 2026 en vivo: resultados por estado y municipio, una proyección del resultado final, dónde se mueve el voto respecto de 2022, de dónde sale la ventaja y cómo votan los brasileños en el exterior. Se actualiza solo.">
+<meta name="twitter:image" content="https://dschteingart.github.io/brasil-2026-vivo/thumbs/og-balotaje-2022.png">
+<script>window.LANG = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es'; window.VIVO_PUBLICO = true;</script>
+</head>
+<body>
+<div id="escenario"></div>
+<script>
+  // Carga en orden y reintenta si un archivo falla (algunos antivirus cortan descargas locales).
+  // estilos.js va primero: inyecta las tipografías y el CSS (los reusa la descarga en PNG).
+  (function () {
+    const V = 52;
+    const archivos = ['js/estilos.js', 'data/series.js', 'data/encuestas.js', 'data/elecciones-2022.js', 'data/socio.js', 'data/exterior.js', 'js/geo-br.js', 'js/charts.js', 'js/exportar.js', 'js/mapa.js', 'js/placas.js'];
+    function cargar(i, intento) {
+      if (i >= archivos.length) return;
+      const s = document.createElement('script');
+      s.src = `${archivos[i]}?v=${V}` + (intento ? `&r=${intento}` : '');
+      s.onload = () => cargar(i + 1, 0);
+      s.onerror = () => {
+        s.remove();
+        if (intento < 6) setTimeout(() => cargar(i, intento + 1), 300 * (intento + 1));
+        else if (archivos[i] === 'data/encuestas.js' || archivos[i] === 'data/exterior.js') cargar(i + 1, 0);  // opcionales: sin ellos, sigue
+        else document.body.insertAdjacentHTML('beforeend', `<p style="font:20px sans-serif;padding:30px">No se pudo cargar ${archivos[i]}. Recargá la página (F5).</p>`);
+      };
+      document.body.appendChild(s);
+    }
+    cargar(0, 0);
+  })();
+</script>
+</body>
+</html>

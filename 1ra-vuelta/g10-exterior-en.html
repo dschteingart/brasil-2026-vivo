@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abroad, the shift toward Flávio was concentrated in the United States and Portugal — El Atlas</title><meta name="description" content="Vote margin between Lula and the Bolsonaro candidate in the countries with the most Brazilian voters, in percentage points.">
+<meta property="og:title" content="Abroad, the shift toward Flávio was concentrated in the United States and Portugal — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g10-exterior-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo">
+<h1>Abroad, the shift toward Flávio was concentrated in the United States and Portugal</h1><p class="sub">Vote margin between Lula and the Bolsonaro candidate in the countries with the most Brazilian voters, in percentage points.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE (98.45% of polling stations abroad reported). All voters abroad: Lula 47.5%, Flávio 43.5%.</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g10-exterior-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">See all charts →</a></div>
+<script>window.WEB = true;</script><script>window.LANG = 'en';</script><script src="base.js?v=3"></script><script>const D = [{"nm": "United States", "a": -26.488008693123554, "b": -31.65791126591675, "big": true}, {"nm": "Portugal", "a": 29.36817364855523, "b": 13.885246553025787, "big": true}, {"nm": "Japan", "a": -58.725674827369744, "b": -56.49485137539745, "big": false}, {"nm": "Canada", "a": 22.87268369134323, "b": 25.233170191153384, "big": false}, {"nm": "United Kingdom", "a": 20.241957285752907, "b": 21.61198758993993, "big": false}, {"nm": "Germany", "a": 50.90345593824922, "b": 53.148601212636954, "big": false}, {"nm": "Spain", "a": 30.652395514780835, "b": 33.8449599034233, "big": false}, {"nm": "Italy", "a": 14.728756601056169, "b": 15.196205260888314, "big": false}, {"nm": "France", "a": 63.84775911755938, "b": 62.54795253813899, "big": false}, {"nm": "Switzerland", "a": 4.821761759795738, "b": 6.164194232009582, "big": false}, {"nm": "Australia", "a": 26.117758186397985, "b": 24.394144421208022, "big": false}, {"nm": "Ireland", "a": 64.69581248353964, "b": 53.81371249548138, "big": false}, {"nm": "Argentina", "a": 34.40285204991088, "b": 35.52880481513328, "big": false}, {"nm": "Netherlands", "a": 54.29809358752166, "b": 56.47115078100096, "big": false}];
+listo(() => { 
+const { svg, W, H } = lienzo();
+const lab = 210, der = 30, x0 = -80, x1 = 80, X = v => lab + (v - x0) / (x1 - x0) * (W - lab - der);
+const top = 58, bot = 70, paso = (H - top - bot) / D.length;
+// leyenda
+el('circle', { cx: lab + 10, cy: 16, r: 10, fill: '#FAF8F3', stroke: '#8A8579', 'stroke-width': 3 }, svg); T(svg, lab + 28, 24, '2022', { size: 23, fill: C.soft });
+el('circle', { cx: lab + 130, cy: 16, r: 11, fill: '#5A5A5A' }, svg); T(svg, lab + 148, 24, '2026', { size: 23, fill: C.soft });
+[-60, -30, 0, 30, 60].forEach(t => { el('line', { x1: X(t), x2: X(t), y1: top - 8, y2: H - bot + 4, stroke: t === 0 ? '#8A8579' : C.grid, 'stroke-width': t === 0 ? 2 : 1.5 }, svg);
+  T(svg, X(t), H - bot + 32, String(Math.abs(t)), { size: 22, fill: C.muted, anchor: 'middle' }); });
+T(svg, X(-4), H - 6, '← Flávio ahead', { size: 22, w: 700, fill: C.bolso, anchor: 'end' });
+T(svg, X(4), H - 6, 'Lula ahead →', { size: 22, w: 700, fill: C.lula, anchor: 'start' });
+D.forEach((f, i) => {
+  const yc = top + paso * (i + 0.5), col = f.b >= 0 ? C.lula : C.bolso;
+  T(svg, lab - 18, yc + 8, f.nm, { size: 24, w: f.big ? 800 : 400, fill: C.ink, anchor: 'end' });
+  el('line', { x1: X(f.a), x2: X(f.b), y1: yc, y2: yc, stroke: '#8A8579', 'stroke-width': 3, opacity: 0.6 }, svg);
+  const mg = (x, b) => (x >= 0 ? 'Lula' : b) + ' +' + Math.round(Math.abs(x)), tt = `<b>${f.nm}</b><br>2022: ${mg(f.a, 'Bolsonaro')}<br>2026: ${mg(f.b, 'Flávio')}`;
+  tip(el('circle', { cx: X(f.a), cy: yc, r: 9, fill: '#FAF8F3', stroke: '#8A8579', 'stroke-width': 3 }, svg), tt);
+  tip(el('circle', { cx: X(f.b), cy: yc, r: 11, fill: col }, svg), tt);
+});
+ });</script></body></html>

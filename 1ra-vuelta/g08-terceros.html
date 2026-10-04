@@ -1,0 +1,36 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nadie más llegó al 3%; Caiado sacó 12% en su Goiás — El Atlas</title><meta name="description" content="Porcentaje de votos válidos de los demás candidatos. Entre todos sumaron 7,8%.">
+<meta property="og:title" content="Nadie más llegó al 3%; Caiado sacó 12% en su Goiás — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g08-terceros.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">EL ATLAS · ELECCIONES BRASIL</a></div>
+<div class="marco"><div class="lienzo">
+<h1>Nadie más llegó al 3%; Caiado sacó 12% en su Goiás</h1><p class="sub">Porcentaje de votos válidos de los demás candidatos. Entre todos sumaron 7,8%.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Fuente:</b> TSE (escrutinio con 99,94% de las secciones y resultados oficiales de 2022).</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g08-terceros.png" download>Descargar PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">Ver todos los gráficos →</a></div>
+<script>window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = [{"nm": "Augusto Cury", "v": 2.8913469503031073, "b": 4.099531469825194, "bnm": "Amapá", "col": "#C9A227"}, {"nm": "Renan Santos", "v": 2.243805745539189, "b": 3.23256701901049, "bnm": "São Paulo", "col": "#6B3D8B"}, {"nm": "Ronaldo Caiado", "v": 2.1843875616526036, "b": 12.331839795100244, "bnm": "Goiás", "col": "#2C8484"}, {"nm": "Romeu Zema", "v": 0.27377235402112987, "b": 1.0071102718525513, "bnm": "Exterior", "col": "#E07A23"}];
+listo(() => { 
+const { svg, W, H } = lienzo();
+const lab = 250, der = 60, X = v => lab + v / 14 * (W - lab - der);
+const top = 70, bot = 50, paso = (H - top - bot) / D.length, bh = Math.min(paso * 0.42, 54);
+[0, 4, 8, 12].forEach(t => { el('line', { x1: X(t), x2: X(t), y1: top - 16, y2: H - bot + 6, stroke: t === 0 ? '#8A8579' : C.grid, 'stroke-width': t === 0 ? 2 : 1.5 }, svg);
+  T(svg, X(t), H - 12, t + '%', { size: 22, fill: C.muted, anchor: 'middle' }); });
+// leyenda
+el('rect', { x: lab, y: 8, width: 26, height: 22, rx: 3, fill: '#8A8579' }, svg); T(svg, lab + 36, 27, 'En todo Brasil', { size: 23, fill: C.soft });
+el('circle', { cx: lab + 250, cy: 19, r: 10, fill: '#FAF8F3', stroke: '#5A5A5A', 'stroke-width': 3.5 }, svg); T(svg, lab + 268, 27, 'En su mejor estado', { size: 23, fill: C.soft });
+D.forEach((f, i) => {
+  const yc = top + paso * (i + 0.5);
+  T(svg, lab - 18, yc + 9, f.nm, { size: 26, w: 600, fill: C.ink, anchor: 'end' });
+  const tt = `<b>${f.nm}</b><br>${LBL.brasil}: ${fmt(f.v)}%<br>${f.bnm}: ${fmt(f.b)}%`;
+  tip(el('rect', { x: X(0), y: yc - bh / 2, width: X(f.v) - X(0), height: bh, fill: f.col, rx: 2 }, svg), tt);
+  const dentro = X(f.v) - X(0) > 70;
+  T(svg, dentro ? X(f.v) - 10 : X(f.v) + 10, yc + 9, fmt(f.v) + '%', { size: 24, w: 700, fill: dentro ? '#FFFFFF' : f.col, anchor: dentro ? 'end' : 'start' });
+  if (f.b - f.v > 0.8) {
+    const lejos = f.b - f.v > 3;
+    if (lejos) el('line', { x1: X(f.v) + 8, x2: X(f.b) - 14, y1: yc, y2: yc, stroke: f.col, 'stroke-width': 2, 'stroke-dasharray': '4 4', opacity: 0.7 }, svg);
+    tip(el('circle', { cx: X(f.b), cy: yc, r: 12, fill: '#FAF8F3', stroke: f.col, 'stroke-width': 4 }, svg), tt);
+    if (lejos) T(svg, X(f.b), yc - 24, `${f.bnm} ${fmt(f.b)}%`, { size: 23, w: 700, fill: f.col, anchor: 'middle' });
+    else T(svg, X(f.b) + 22, yc + 8, `${f.bnm} ${fmt(f.b)}%`, { size: 23, w: 700, fill: f.col });
+  }
+});
+ });</script></body></html>

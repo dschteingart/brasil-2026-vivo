@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For the first time since 1998, Lula did not finish first in a first round — El Atlas</title><meta name="description" content="First-round share of valid votes for the Workers’ Party (PT) candidate and the main rival, 1989–2026.">
+<meta property="og:title" content="For the first time since 1998, Lula did not finish first in a first round — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g01-historico-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo">
+<h1>For the first time since 1998, Lula did not finish first in a first round</h1><p class="sub">First-round share of valid votes for the Workers’ Party (PT) candidate and the main rival, 1989–2026.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE (2026: 99.94% of polling stations reported). Rivals: Collor, Fernando Henrique Cardoso (twice), Serra (twice), Alckmin, Aécio, Jair Bolsonaro (twice) and Flávio Bolsonaro.</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g01-historico-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">See all charts →</a></div>
+<script>window.WEB = true;</script><script>window.LANG = 'en';</script><script src="base.js?v=3"></script><script>const D = [{"a": 1989, "pn": "Lula", "pt": 17.19, "lula": true, "r": 30.48, "rn": "Collor"}, {"a": 1994, "pn": "Lula", "pt": 27.04, "lula": true, "r": 54.28, "rn": "FHC"}, {"a": 1998, "pn": "Lula", "pt": 31.71, "lula": true, "r": 53.06, "rn": "FHC"}, {"a": 2002, "pn": "Lula", "pt": 46.44, "lula": true, "r": 23.2, "rn": "Serra"}, {"a": 2006, "pn": "Lula", "pt": 48.61, "lula": true, "r": 41.64, "rn": "Alckmin"}, {"a": 2010, "pn": "Dilma", "pt": 46.91, "lula": false, "r": 32.61, "rn": "Serra"}, {"a": 2014, "pn": "Dilma", "pt": 41.59, "lula": false, "r": 33.55, "rn": "Aécio"}, {"a": 2018, "pn": "Haddad", "pt": 29.28, "lula": false, "r": 46.03, "rn": "Bolsonaro"}, {"a": 2022, "pn": "Lula", "pt": 48.43, "lula": true, "r": 43.2, "rn": "Bolsonaro"}, {"a": 2026, "pn": "Lula", "pt": 45.14, "lula": true, "r": 47.04, "rn": "Flávio"}];
+listo(() => { 
+const { svg, W, H } = lienzo();
+const l = 64, r = 150, top = 64, bot = 50, X = a => l + (a - 1989) / (2026 - 1989) * (W - l - r), Y = v => top + (60 - v) / 60 * (H - top - bot);
+// leyenda
+el('circle', { cx: l + 10, cy: 18, r: 10, fill: C.lula }, svg); T(svg, l + 28, 26, 'Lula', { size: 23, fill: C.soft });
+el('circle', { cx: l + 110, cy: 18, r: 9, fill: '#FAF8F3', stroke: C.lula, 'stroke-width': 3.5 }, svg); T(svg, l + 128, 26, 'Other PT candidate', { size: 23, fill: C.soft });
+el('circle', { cx: l + 400, cy: 18, r: 10, fill: C.bolso }, svg); T(svg, l + 418, 26, 'Main rival', { size: 23, fill: C.soft });
+[0, 20, 40, 60].forEach(t => { el('line', { x1: l, x2: W - r + 30, y1: Y(t), y2: Y(t), stroke: t === 0 ? '#8A8579' : C.grid, 'stroke-width': t === 0 ? 2 : 1.5 }, svg);
+  T(svg, l - 14, Y(t) + 8, t + '%', { size: 22, fill: C.muted, anchor: 'end' }); });
+D.forEach(f => T(svg, X(f.a), H - 12, f.a === 2026 ? '2026' : "'" + String(f.a).slice(2), { size: 22, fill: f.a === 2026 ? C.ink : C.muted, w: f.a === 2026 ? 700 : 400, anchor: 'middle' }));
+[['r', C.bolso], ['pt', C.lula]].forEach(([k, col]) => {
+  el('polyline', { points: D.map(f => `${X(f.a)},${Y(f[k])}`).join(' '), fill: 'none', stroke: col, 'stroke-width': 4, 'stroke-linejoin': 'round' }, svg);
+  D.forEach(f => {
+    const hueco = k === 'pt' && !f.lula;
+    tip(el('circle', { cx: X(f.a), cy: Y(f[k]), r: f.a === 2026 ? 12 : 9, fill: hueco ? '#FAF8F3' : col, stroke: col, 'stroke-width': hueco ? 3.5 : 0 }, svg), `<b>${f.a}</b><br>${f.pn} ${fmt(f.pt)}%<br>${f.rn} ${fmt(f.r)}%`);
+  });
+});
+const u = D[D.length - 1];
+T(svg, X(2026) + 20, Y(u.r) - 38, 'Flávio', { size: 25, w: 700, fill: C.bolso });
+T(svg, X(2026) + 20, Y(u.r) - 10, fmt(u.r) + '%', { size: 25, w: 700, fill: C.bolso });
+T(svg, X(2026) + 20, Y(u.pt) + 30, 'Lula', { size: 25, w: 700, fill: C.lula });
+T(svg, X(2026) + 20, Y(u.pt) + 58, fmt(u.pt) + '%', { size: 25, w: 700, fill: C.lula });
+ });</script></body></html>

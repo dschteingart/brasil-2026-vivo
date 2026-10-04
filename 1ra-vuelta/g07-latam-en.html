@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>In South America, the incumbent party lost 13 of the last 15 presidential elections — El Atlas</title><meta name="description" content="Presidential elections since 2020, by whether the outgoing government’s party or coalition won.">
+<meta property="og:title" content="In South America, the incumbent party lost 13 of the last 15 presidential elections — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g07-latam-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo">
+<h1>In South America, the incumbent party lost 13 of the last 15 presidential elections</h1><p class="sub">Presidential elections since 2020, by whether the outgoing government’s party or coalition won.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> national electoral authorities. Excludes elections without genuine competition. In Bolivia 2020, Colombia 2022, Ecuador 2023 and Peru 2026 the outgoing government had no candidate of its own; these count as losses.</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g07-latam-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">See all charts →</a></div>
+<script>window.WEB = true;</script><script>window.LANG = 'en';</script><script src="base.js?v=3"></script><script>const D = {"sud": [["Bolivia", 2020, false], ["Ecuador", 2021, false], ["Peru", 2021, false], ["Chile", 2021, false], ["Colombia", 2022, false], ["Brazil", 2022, false], ["Paraguay", 2023, true], ["Ecuador", 2023, false], ["Argentina", 2023, false], ["Uruguay", 2024, false], ["Ecuador", 2025, true], ["Bolivia", 2025, false], ["Chile", 2025, false], ["Peru", 2026, false], ["Colombia", 2026, false]], "resto": [["Dominican Rep.", 2020, false], ["Honduras", 2021, false], ["Costa Rica", 2022, false], ["Guatemala", 2023, false], ["El Salvador", 2024, true], ["Panama", 2024, false], ["Dominican Rep.", 2024, true], ["Mexico", 2024, true], ["Honduras", 2025, false], ["Costa Rica", 2026, true]]};
+listo(() => { 
+const { svg, W, H } = lienzo();
+const GAN = '#7A766C', PER = C.acc;
+// leyenda
+[[GAN, 'Incumbent party won'], [PER, 'Incumbent party lost']].forEach(([col, nm], i) => { const x = i * 300; el('rect', { x, y: 4, width: 26, height: 26, rx: 4, fill: col }, svg); T(svg, x + 38, 26, nm, { size: 23, fill: C.soft }); });
+const gapC = 60, cw = (W - gapC) / 2, top = 150, fila = Math.min(80, (H - top - 2) / 15), ch = fila - 9;
+[[D.sud, 'South America'], [D.resto, 'Mexico, Central America, Caribbean']].forEach(([lista, tit], k) => {
+  const x0 = k * (cw + gapC), perd = lista.filter(e => !e[2]).length;
+  T(svg, x0, 82, tit.toUpperCase(), { size: 20, w: 700, fill: C.soft, ls: 1 });
+  const t = T(svg, x0, 124, '', { size: 26, fill: C.soft });
+  el('tspan', { style: `fill:${PER};font-weight:800;font-size:34px` }, t, `${perd} of ${lista.length}`);
+  el('tspan', {}, t, ' lost');
+  lista.forEach(([pais, anio, gano], i) => {
+    const y = top + i * fila, col = gano ? GAN : PER;
+    tip(el('rect', { x: x0, y, width: cw, height: ch, rx: 6, fill: col }, svg), `<b>${pais} ${anio}</b>: ${gano ? LBL.gano : LBL.perdio}`);
+    T(svg, x0 + 20, y + ch / 2 + 8, pais, { size: 24, w: 600, fill: '#FFFFFF' });
+    T(svg, x0 + cw - 16, y + ch / 2 + 8, String(anio), { size: 22, fill: '#FFFFFF', anchor: 'end' });
+  });
+});
+ });</script></body></html>
