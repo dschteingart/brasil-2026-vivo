@@ -1,0 +1,33 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>En municipios ricos o pobres, con más o menos evangélicos, Lula cayó parecido — El Atlas</title><meta name="description" content="Cambio en el porcentaje de votos de Lula entre 2022 y 2026, en puntos, por quintiles de municipios.">
+<meta property="og:title" content="En municipios ricos o pobres, con más o menos evangélicos, Lula cayó parecido — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g05-parejo.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">EL ATLAS · ELECCIONES BRASIL</a></div>
+<div class="marco"><div class="lienzo">
+<h1>En municipios ricos o pobres, con más o menos evangélicos, Lula cayó parecido</h1><p class="sub">Cambio en el porcentaje de votos de Lula entre 2022 y 2026, en puntos, por quintiles de municipios.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Fuente:</b> TSE, IBGE (Censo 2022) y Portal da Transparência. Quintiles con la misma cantidad de votos. Comparando municipios del mismo estado, tampoco aparece un patrón claro.</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g05-parejo.png" download>Descargar PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">Ver todos los gráficos →</a></div>
+<script>window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = {"prom": -3.459829593993251, "paneles": [{"titulo": "Ingreso", "v": [-3.902021183478677, -2.8334513127159004, -4.635809744340268, -3.1526328212419754, -2.712044187075401], "et": ["Menor", "", "", "", "Mayor"], "eje": "Ingreso por persona"}, {"titulo": "Bolsa Família", "v": [-4.365986349672663, -2.845847223072942, -3.136691353211982, -3.069726852461673, -3.879486416843554], "et": ["Menos", "", "", "", "Más"], "eje": "Hogares con el programa"}, {"titulo": "Evangélicos", "v": [-4.939908309023007, -3.3928265134825892, -2.5513262084955812, -2.91941654701056, -3.4961101205409024], "et": ["Menos", "", "", "", "Más"], "eje": "% de evangélicos"}]};
+listo(() => { 
+const { svg, W, H } = lienzo();
+const gapP = 56, nP = D.paneles.length, pw = (W - gapP * (nP - 1)) / nP;
+const top = 118, bot = 96, y0 = -7.5, Y = v => top + (0 - v) / (0 - y0) * (H - top - bot);
+D.paneles.forEach((P, k) => {
+  const xp = k * (pw + gapP);
+  T(svg, xp, 78, P.titulo.toUpperCase(), { size: 22, w: 700, fill: C.soft, ls: 2 });
+  el('line', { x1: xp, x2: xp + pw, y1: Y(0), y2: Y(0), stroke: '#8A8579', 'stroke-width': 2 }, svg);
+  // promedio nacional
+  el('line', { x1: xp, x2: xp + pw, y1: Y(D.prom), y2: Y(D.prom), stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+  const bw = pw / P.v.length;
+  P.v.forEach((v, i) => {
+    const x = xp + bw * i + bw * 0.16, w = bw * 0.68;
+    tip(el('rect', { x, y: Y(0), width: w, height: Y(v) - Y(0), fill: C.bolso, rx: 2 }, svg), `<b>${P.titulo}</b>: ${P.et[i] || LBL.q + ' ' + (i + 1)}<br>${sg(v)} pts`);
+    T(svg, x + w / 2, Y(v) + 30, sg(v), { size: 24, w: 700, fill: C.bolso, anchor: 'middle', halo: 6 });
+    if (P.et[i]) T(svg, x + w / 2, H - bot + 34, P.et[i], { size: 21, fill: C.soft, anchor: 'middle' });
+  });
+  T(svg, xp + pw / 2, H - 14, P.eje, { size: 21, fill: C.muted, anchor: 'middle', italic: false });
+});
+el('line', { x1: 0, x2: 48, y1: 19, y2: 19, stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+T(svg, 60, 27, 'Promedio de Brasil: ' + sg(D.prom), { size: 22, fill: C.soft });
+ });</script></body></html>

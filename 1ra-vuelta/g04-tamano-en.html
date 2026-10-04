@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The smaller the municipality, the more ground Lula lost — El Atlas</title><meta name="description" content="Change in Lula’s first-round share of the vote from 2022 to 2026, in percentage points, by type of municipality.">
+<meta property="og:title" content="The smaller the municipality, the more ground Lula lost — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/1ra-vuelta/g04-tamano-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo">
+<h1>The smaller the municipality, the more ground Lula lost</h1><p class="sub">Change in Lula’s first-round share of the vote from 2022 to 2026, in percentage points, by type of municipality.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE and IBGE (2022 Census). Groups of municipalities weighted by votes; college-graduate groups are quintiles. 5,551 municipalities with more than 90% of the vote counted.</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g04-tamano-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/index-en.html">See all charts →</a></div>
+<script>window.WEB = true;</script><script>window.LANG = 'en';</script><script src="base.js?v=3"></script><script>const D = {"prom": -3.459829593993251, "paneles": [{"titulo": "Size of municipality", "v": [-6.496069519561401, -4.989793333771181, -3.8430669681999574, -2.127096426121453, -0.41044937949860755], "et": ["<10k", "10–50k", "50–200k", "0.2–1M", ">1M"], "eje": "Registered voters"}, {"titulo": "College graduates", "v": [-4.605845737759841, -5.1040362223833196, -4.058887688548927, -2.713417153665571, -0.7757972605244777], "et": ["<9%", "9-14", "14-20", "20-27", ">27%"], "eje": "% of adults with a college degree"}]};
+listo(() => { 
+const { svg, W, H } = lienzo();
+const gapP = 56, nP = D.paneles.length, pw = (W - gapP * (nP - 1)) / nP;
+const top = 118, bot = 96, y0 = -7.5, Y = v => top + (0 - v) / (0 - y0) * (H - top - bot);
+D.paneles.forEach((P, k) => {
+  const xp = k * (pw + gapP);
+  T(svg, xp, 78, P.titulo.toUpperCase(), { size: 22, w: 700, fill: C.soft, ls: 2 });
+  el('line', { x1: xp, x2: xp + pw, y1: Y(0), y2: Y(0), stroke: '#8A8579', 'stroke-width': 2 }, svg);
+  // promedio nacional
+  el('line', { x1: xp, x2: xp + pw, y1: Y(D.prom), y2: Y(D.prom), stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+  const bw = pw / P.v.length;
+  P.v.forEach((v, i) => {
+    const x = xp + bw * i + bw * 0.16, w = bw * 0.68;
+    tip(el('rect', { x, y: Y(0), width: w, height: Y(v) - Y(0), fill: C.bolso, rx: 2 }, svg), `<b>${P.titulo}</b>: ${P.et[i] || LBL.q + ' ' + (i + 1)}<br>${sg(v)} pts`);
+    T(svg, x + w / 2, Y(v) + 30, sg(v), { size: 24, w: 700, fill: C.bolso, anchor: 'middle', halo: 6 });
+    if (P.et[i]) T(svg, x + w / 2, H - bot + 34, P.et[i], { size: 21, fill: C.soft, anchor: 'middle' });
+  });
+  T(svg, xp + pw / 2, H - 14, P.eje, { size: 21, fill: C.muted, anchor: 'middle', italic: false });
+});
+el('line', { x1: 0, x2: 48, y1: 19, y2: 19, stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+T(svg, 60, 27, 'Brazil average: ' + sg(D.prom), { size: 22, fill: C.soft });
+ });</script></body></html>
