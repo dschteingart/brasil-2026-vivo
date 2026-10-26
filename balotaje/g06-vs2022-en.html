@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compared with 2022, Lula gained in the cities and lost in the countryside — The Atlas</title><meta name="description" content="Difference between Lula's share in the 2026 runoff and in the 2022 runoff, in points, by type of municipality.">
+<meta property="og:title" content="Compared with 2022, Lula gained in the cities and lost in the countryside — The Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/balotaje/g06-vs2022-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo">
+<h1>Compared with 2022, Lula gained in the cities and lost in the countryside</h1><p class="sub">Difference between Lula's share in the 2026 runoff and in the 2022 runoff, in points, by type of municipality.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE and IBGE (2022 Census; municipal GDP 2021). Lula's share of the two finalists' votes (in 2022, against Jair Bolsonaro). Nationwide, Lula went from 50.9% to 51.8%. Quintiles with the same number of votes. Size, from fewer than 10,000 to more than 1 million registered voters.</div><div class="firma"><b>The Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g06-vs2022-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">See all charts →</a></div>
+<script>window.LANG = "en"; window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = {"prom": 0.5918158758809593, "nacional": 0.8826918490905697, "paneles": [{"titulo": "Size", "eje": "Registered voters", "v": [-2.9030059434037323, -1.3136007984643228, 0.7956296135087753, 2.355285773499219, 3.0893819701637484], "n": [2939, 2135, 394, 90, 12], "et": ["Small", "", "", "", "Large"], "lula": [5.041914709848946, 5.412242483941029, 6.789594999841967, 7.485168684462721, 7.884928575107409], "flavio": [1.0010817123911764, 0.553375757904206, 1.1974931504118587, 1.6468280901310308, 1.9733236220759096]}, {"titulo": "College graduates", "eje": "% with a college degree", "v": [-1.574033525628328, -0.6610589585068577, 0.5871226992900948, 1.757784384631756, 2.8006988098289054], "n": [2327, 2108, 854, 242, 39], "et": ["Low", "", "", "", "High"], "lula": [5.045333718368553, 6.083679841241597, 6.7565846405084, 7.081972002508017, 7.913420836486971], "flavio": [-0.06343396589571881, 0.7989095141665885, 1.355396929400328, 1.7298670214367888, 2.339705728169335]}, {"titulo": "Farm share", "eje": "% of value added", "v": [2.5399554253005503, 2.5166946573206017, 1.1519854213574408, -0.8356403049922458, -2.461326565699715], "n": [59, 181, 543, 1715, 3072], "et": ["Low", "", "", "", "High"], "lula": [8.149730326833954, 7.319218404514025, 6.677535903332895, 5.610119361081566, 5.111673080537486], "flavio": [1.7310009318316446, 1.588996183882351, 1.4183596348061727, 0.6489159049825446, 0.7836767360265284]}], "y0": -4.5, "y1": 4.5, "que": "Lula vs. 2022", "leyenda": "Average of municipalities: "};
+listo(() => {
+
+const { svg, W, H } = lienzo();
+const gapP = 56, nP = D.paneles.length, m0 = 14, pw = (W - m0 - gapP * (nP - 1)) / nP;
+const top = 118, bot = 96, Y = v => top + (D.y1 - v) / (D.y1 - D.y0) * (H - top - bot);
+D.paneles.forEach((P, k) => {
+  const xp = m0 + k * (pw + gapP);
+  T(svg, xp, 78, P.titulo.toUpperCase(), { size: 21, w: 700, fill: C.soft, ls: 2 });
+  el('line', { x1: xp, x2: xp + pw, y1: Y(0), y2: Y(0), stroke: '#8A8579', 'stroke-width': 2 }, svg);
+  el('line', { x1: xp, x2: xp + pw, y1: Y(D.prom), y2: Y(D.prom), stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+  const bw = pw / P.v.length;
+  P.v.forEach((v, i) => {
+    const x = xp + bw * i + bw * 0.16, w = bw * 0.68, col = v >= 0 ? C.lula : C.bolso;
+    tip(el('rect', { x, y: Math.min(Y(0), Y(v)), width: w, height: Math.abs(Y(v) - Y(0)), fill: col, rx: 2 }, svg),
+      `<b>${P.titulo}</b>: ${P.et[i] || LBL.q + ' ' + (i + 1)}<br>${D.que}: ${sg(v)} pts<br>${P.n[i].toLocaleString(LOC)} municipalities`);
+    T(svg, x + w / 2, v >= 0 ? Y(v) - 12 : Y(v) + 30, sg(v), { size: 22, w: 700, fill: col, anchor: 'middle', halo: 6 });
+    if (P.et[i]) T(svg, x + w / 2, H - bot + 34, P.et[i], { size: 21, fill: C.soft, anchor: 'middle' });
+  });
+  T(svg, xp + pw / 2, H - 14, P.eje, { size: 20, fill: C.muted, anchor: 'middle' });
+});
+el('line', { x1: 0, x2: 48, y1: 19, y2: 19, stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+T(svg, 60, 27, D.leyenda + sg(D.prom), { size: 22, fill: C.soft });
+
+});</script></body></html>

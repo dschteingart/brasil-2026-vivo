@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Whoever wins Minas wins Brazil, again — The Atlas</title><meta name="description" content="The PT candidate's share in each presidential runoff, in Minas Gerais and in all of Brazil.">
+<meta property="og:title" content="Whoever wins Minas wins Brazil, again — The Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/balotaje/g08-minas-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo ancho">
+<h1>Whoever wins Minas wins Brazil, again</h1><p class="sub">The PT candidate's share in each presidential runoff, in Minas Gerais and in all of Brazil.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE (results by state, 1989-2022; final results 2026). Share of the two finalists' votes. The top vote-getter in Minas was the top vote-getter in Brazil in all 18 presidential rounds since 1989 (counting first rounds and the 1994 and 1998 elections, which were decided without a runoff).</div><div class="firma"><b>The Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g08-minas-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">See all charts →</a></div>
+<script>window.LANG = "en"; window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = [{"a": 1989, "c": "Lula", "mg": 44.49, "br": 46.97}, {"a": 2002, "c": "Lula", "mg": 66.45, "br": 61.27}, {"a": 2006, "c": "Lula", "mg": 65.19, "br": 60.83}, {"a": 2010, "c": "Dilma", "mg": 58.45, "br": 56.05}, {"a": 2014, "c": "Dilma", "mg": 52.4, "br": 51.64}, {"a": 2018, "c": "Haddad", "mg": 41.81, "br": 44.87}, {"a": 2022, "c": "Lula", "mg": 50.2, "br": 50.9}, {"a": 2026, "c": "Lula", "mg": 50.43402683340632, "br": 51.78509696626273}];
+listo(() => {
+
+const { svg, W, H } = lienzo();
+const l = 70, r = 170, top = 60, bot = 70, y0 = 40, y1 = 70, X = a => l + (a - 1989) / (2026 - 1989) * (W - l - r), Y = v => top + (y1 - v) / (y1 - y0) * (H - top - bot);
+[40, 45, 50, 55, 60, 65, 70].forEach(t => { el('line', { x1: l, x2: W - r + 20, y1: Y(t), y2: Y(t), stroke: t === 50 ? C.ink : C.grid, 'stroke-width': t === 50 ? 2 : 1.4, 'stroke-dasharray': t === 50 ? '6 5' : null, opacity: t === 50 ? 0.6 : 1 }, svg);
+  T(svg, l - 14, Y(t) + 8, t + '%', { size: 21, fill: C.muted, anchor: 'end' }); });
+D.forEach(f => T(svg, X(f.a), H - bot + 34, String(f.a), { size: 21, fill: f.a === 2026 ? C.ink : C.muted, w: f.a === 2026 ? 700 : 400, anchor: 'middle' }));
+D.forEach(f => T(svg, X(f.a), H - bot + 60, f.c, { size: 18, fill: C.muted, anchor: 'middle' }));
+el('polyline', { points: D.map(f => `${X(f.a)},${Y(f.br)}`).join(' '), fill: 'none', stroke: '#8A8579', 'stroke-width': 4, 'stroke-linejoin': 'round' }, svg);
+el('polyline', { points: D.map(f => `${X(f.a)},${Y(f.mg)}`).join(' '), fill: 'none', stroke: C.acc, 'stroke-width': 5, 'stroke-linejoin': 'round' }, svg);
+D.forEach(f => {
+  tip(el('circle', { cx: X(f.a), cy: Y(f.br), r: 8, fill: '#8A8579' }, svg), `<b>${f.a}</b> · ${f.c} (PT)<br>Brazil: ${fmt(f.br)}%<br>Minas: ${fmt(f.mg)}%`);
+  tip(el('circle', { cx: X(f.a), cy: Y(f.mg), r: 10, fill: f.mg >= 50 ? C.lula : C.bolso, stroke: C.acc, 'stroke-width': 3 }, svg), `<b>${f.a}</b> · ${f.c} (PT)<br>Minas: ${fmt(f.mg)}%<br>Brazil: ${fmt(f.br)}%`);
+});
+const u = D[D.length - 1];
+T(svg, X(2026) + 22, Y(u.mg) + 26, 'Minas', { size: 24, w: 700, fill: C.acc }); T(svg, X(2026) + 22, Y(u.mg) + 52, fmt(u.mg) + '%', { size: 22, w: 700, fill: C.acc });
+T(svg, X(2026) + 22, Y(u.br) - 34, 'Brazil', { size: 24, w: 700, fill: '#6E6A60' }); T(svg, X(2026) + 22, Y(u.br) - 8, fmt(u.br) + '%', { size: 22, w: 700, fill: '#6E6A60' });
+T(svg, l + 8, Y(y1) + 24, '↑ PT wins', { size: 20, w: 700, fill: C.lula }); T(svg, l + 8, Y(y0) - 10, '↓ its rival wins', { size: 20, w: 700, fill: C.bolso });
+
+});</script></body></html>

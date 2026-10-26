@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lula gained evenly across all kinds of municipalities — The Atlas</title><meta name="description" content="How many points the margin shifted toward Lula between the first round and the runoff, by type of municipality.">
+<meta property="og:title" content="Lula gained evenly across all kinds of municipalities — The Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/balotaje/g05-parejo-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo">
+<h1>Lula gained evenly across all kinds of municipalities</h1><p class="sub">How many points the margin shifted toward Lula between the first round and the runoff, by type of municipality.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE and IBGE (2022 Census); Portal da Transparência. Margin = Lula minus Flávio Bolsonaro, as a % of valid votes. Groups of municipalities with the same number of votes (quintiles). Size, from fewer than 10,000 to more than 1 million registered voters. 5,571 municipalities.</div><div class="firma"><b>The Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g05-parejo-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">See all charts →</a></div>
+<script>window.LANG = "en"; window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = {"prom": 5.344483616212254, "paneles": [{"titulo": "Income", "eje": "Income per person", "v": [5.163413910691073, 6.093709919023001, 5.680349370511992, 5.640852325623916, 3.910707378639914], "n": [1940, 865, 1469, 802, 494], "et": ["Low", "", "", "", "High"], "lula": [4.787384771391501, 6.560135969646929, 7.067281705868098, 7.51088402217831, 6.863303330593389], "flavio": [-0.37602913929957893, 0.46642605062393017, 1.3869323353561, 1.870031696554399, 2.9525959519534695]}, {"titulo": "Bolsa Família", "eje": "Households in the program", "v": [3.9969432889199012, 5.571772039828779, 5.886144381304626, 6.033708569859489, 5.23118579497573], "n": [1015, 584, 1031, 1016, 1924], "et": ["Low", "", "", "", "High"], "lula": [6.685167210706879, 7.763542591983139, 7.026344641833681, 6.512643058083327, 4.888806294582054], "flavio": [2.688223921786978, 2.1917705521543596, 1.1402002605290562, 0.47893448822383533, -0.3423795003936725]}, {"titulo": "Evangelicals", "eje": "% evangelical", "v": [4.8399185331199766, 5.833127950359188, 5.414466479556758, 5.358279631475308, 5.27229341183894], "n": [2321, 1000, 712, 726, 811], "et": ["Low", "", "", "", "High"], "lula": [5.481541350234615, 7.171913695652812, 6.794757649451391, 6.834277983433189, 6.6211921980573365], "flavio": [0.6416228171146301, 1.3387857452936203, 1.3802911698946403, 1.4759983519578697, 1.3488987862183848]}, {"titulo": "Size", "eje": "Registered voters", "v": [4.040737817246641, 4.858866726036823, 5.592101849430101, 5.838340594331689, 5.9116049530315005], "n": [2940, 2135, 394, 90, 12], "et": ["Small", "", "", "", "Large"], "lula": [5.041822118261997, 5.412242483941029, 6.789594999841967, 7.485168684462721, 7.884928575107409], "flavio": [1.0010843010153607, 0.553375757904206, 1.1974931504118587, 1.6468280901310308, 1.9733236220759096]}], "y0": 0, "y1": 8, "que": "Change in margin", "leyenda": "Brazil average: "};
+listo(() => {
+
+const { svg, W, H } = lienzo();
+const gapP = 56, nP = D.paneles.length, m0 = 14, pw = (W - m0 - gapP * (nP - 1)) / nP;
+const top = 118, bot = 96, Y = v => top + (D.y1 - v) / (D.y1 - D.y0) * (H - top - bot);
+D.paneles.forEach((P, k) => {
+  const xp = m0 + k * (pw + gapP);
+  T(svg, xp, 78, P.titulo.toUpperCase(), { size: 21, w: 700, fill: C.soft, ls: 2 });
+  el('line', { x1: xp, x2: xp + pw, y1: Y(0), y2: Y(0), stroke: '#8A8579', 'stroke-width': 2 }, svg);
+  el('line', { x1: xp, x2: xp + pw, y1: Y(D.prom), y2: Y(D.prom), stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+  const bw = pw / P.v.length;
+  P.v.forEach((v, i) => {
+    const x = xp + bw * i + bw * 0.16, w = bw * 0.68, col = v >= 0 ? C.lula : C.bolso;
+    tip(el('rect', { x, y: Math.min(Y(0), Y(v)), width: w, height: Math.abs(Y(v) - Y(0)), fill: col, rx: 2 }, svg),
+      `<b>${P.titulo}</b>: ${P.et[i] || LBL.q + ' ' + (i + 1)}<br>${D.que}: ${sg(v)} pts<br>${P.n[i].toLocaleString(LOC)} municipalities`);
+    T(svg, x + w / 2, v >= 0 ? Y(v) - 12 : Y(v) + 30, sg(v), { size: 22, w: 700, fill: col, anchor: 'middle', halo: 6 });
+    if (P.et[i]) T(svg, x + w / 2, H - bot + 34, P.et[i], { size: 21, fill: C.soft, anchor: 'middle' });
+  });
+  T(svg, xp + pw / 2, H - 14, P.eje, { size: 20, fill: C.muted, anchor: 'middle' });
+});
+el('line', { x1: 0, x2: 48, y1: 19, y2: 19, stroke: C.ink, 'stroke-width': 1.6, 'stroke-dasharray': '6 5', opacity: 0.55 }, svg);
+T(svg, 60, 27, D.leyenda + sg(D.prom), { size: 22, fill: C.soft });
+
+});</script></body></html>

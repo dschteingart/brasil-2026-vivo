@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>More voters, fewer blank and spoiled ballots — The Atlas</title><meta name="description" content="Turnout and blank or spoiled ballots in the first round and the 2026 runoff, by region.">
+<meta property="og:title" content="More voters, fewer blank and spoiled ballots — The Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/balotaje/g04-participacion-en.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">THE ATLAS · BRAZIL ELECTIONS</a></div>
+<div class="marco"><div class="lienzo ancho">
+<h1>More voters, fewer blank and spoiled ballots</h1><p class="sub">Turnout and blank or spoiled ballots in the first round and the 2026 runoff, by region.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Source:</b> TSE, final results by municipality (excluding voters abroad). Nationwide, 2.9 million more people voted than in the first round, and there were 1.8 million fewer blank or spoiled ballots.</div><div class="firma"><b>The Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g04-participacion-en.png" download>Download PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/?lang=en">See all charts →</a></div>
+<script>window.LANG = "en"; window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = [{"nm": "Brazil", "a": 79.14537716548968, "b": 81.00789311488164, "c": 4.773785285102433, "d": 3.241187956547338}, {"nm": "North", "a": 80.53702053441772, "b": 78.75141899124759, "c": 3.440534698296778, "d": 2.6067086616310187}, {"nm": "Northeast", "a": 81.59258951888681, "b": 83.50862674323729, "c": 5.080837120332421, "d": 2.9955811590485513}, {"nm": "Southeast", "a": 77.28174616632484, "b": 79.7278372000231, "c": 5.46270890155834, "d": 3.805677843882216}, {"nm": "South", "a": 79.54455830746672, "b": 81.81129923251359, "c": 3.7561208538520696, "d": 2.7577711693409386}, {"nm": "Center-West", "a": 78.29535541662247, "b": 79.94998373563203, "c": 3.321922502558444, "d": 2.6842990889132388}];
+listo(() => {
+
+const { svg, W, H } = lienzo();
+const gapP = 70, pw = (W - gapP) / 2, top = 160, bot = 60;
+const pan = [['TURNOUT', 'a', 'b', 70, 90, '% of registered voters'], ['BLANK AND SPOILED', 'c', 'd', 0, 6, '% of those who voted']];
+pan.forEach(([tit, k1, k2, y0, y1, eje], p) => {
+  const xp = p * (pw + gapP), Y = v => top + (y1 - v) / (y1 - y0) * (H - top - bot);
+  T(svg, xp, 96, tit, { size: 22, w: 700, fill: C.soft, ls: 2 });
+  T(svg, xp, 126, eje, { size: 20, fill: C.muted });
+  const n = D.length, bw = pw / n;
+  D.forEach((f, i) => {
+    const x = xp + bw * i;
+    [[f[k1], 0.34, 'First round'], [f[k2], 1, 'Runoff']].forEach(([v, t, nm], j) => {
+      const w = bw * 0.36, xx = x + bw * 0.12 + j * (w + 4), col = mix('#FAF8F3', C.ink, t * 0.8);
+      tip(el('rect', { x: xx, y: Y(v), width: w, height: Y(y0) - Y(v), fill: col, rx: 2 }, svg), `<b>${f.nm}</b><br>${nm}: ${fmt(v)}%`);
+      T(svg, xx + w / 2, Y(v) - 10, fmt(v), { size: 19, w: j ? 700 : 500, fill: j ? C.ink : C.muted, anchor: 'middle' });
+    });
+    T(svg, x + bw / 2, H - bot + 30, f.nm === 'Center-West' ? 'C.-West' : f.nm, { size: 17, w: f.nm === 'Brazil' ? 700 : 400, fill: C.soft, anchor: 'middle' });
+  });
+  el('line', { x1: xp, x2: xp + pw, y1: Y(y0), y2: Y(y0), stroke: '#8A8579', 'stroke-width': 2 }, svg);
+});
+el('rect', { x: 0, y: 14, width: 22, height: 22, fill: mix('#FAF8F3', C.ink, 0.27), rx: 2 }, svg); T(svg, 30, 33, 'First round', { size: 21, fill: C.soft });
+el('rect', { x: 150, y: 14, width: 22, height: 22, fill: mix('#FAF8F3', C.ink, 0.8), rx: 2 }, svg); T(svg, 180, 33, 'Runoff', { size: 21, fill: C.soft });
+
+});</script></body></html>
