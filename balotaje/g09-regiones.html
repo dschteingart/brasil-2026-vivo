@@ -1,0 +1,32 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Nordeste volvió a alcanzar — El Atlas</title><meta name="description" content="Diferencia de votos entre Lula y su rival en cada región, en millones: balotaje 2022, primera vuelta y balotaje de 2026.">
+<meta property="og:title" content="El Nordeste volvió a alcanzar — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/balotaje/g09-regiones.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">EL ATLAS · ELECCIONES BRASIL</a></div>
+<div class="marco"><div class="lienzo ancho">
+<h1>El Nordeste volvió a alcanzar</h1><p class="sub">Diferencia de votos entre Lula y su rival en cada región, en millones: balotaje 2022, primera vuelta y balotaje de 2026.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Fuente:</b> TSE, resultados finales. Votos válidos de Lula menos los de su rival (Jair Bolsonaro en 2022, Flávio Bolsonaro en 2026; en la 1ª vuelta, sin contar a los demás candidatos).</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g09-regiones.png" download>Descargar PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">Ver todos los gráficos →</a></div>
+<script>window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = [{"nm": "Nordeste", "d22": 12.57202, "d1": 11.091406, "d2": 13.653472}, {"nm": "Norte", "d22": -0.192157, "d1": -0.461797, "d2": 0.0010789999999999867}, {"nm": "Sudeste", "d22": -4.25011, "d1": -5.664856, "d2": -2.80677}, {"nm": "Sur", "d22": -4.189784, "d1": -5.042624, "d2": -4.576296}, {"nm": "Centro-Oeste", "d22": -1.807965, "d1": -2.170393, "d2": -1.869948}, {"nm": "Exterior", "d22": 0.007641, "d1": 0.013487, "d2": 0.028657}, {"nm": "Brasil", "d22": 2.1396449999999994, "d1": -2.234777000000001, "d2": 4.430194, "tot": true}];
+listo(() => {
+
+const { svg, W, H } = lienzo();
+const lab = 210, r = 40, top = 70, bot = 50, x0 = -7, x1 = 15, X = v => lab + (v - x0) / (x1 - x0) * (W - lab - r);
+const paso = (H - top - bot) / (D.length + 0.5), bh = paso * 0.22;
+[[0.25, '2022'], [0.55, '1ª vuelta 2026'], [1, 'Balotaje 2026']].forEach(([t, nm], i) => { const x = lab + i * 270;
+  el('rect', { x, y: 6, width: 22, height: 24, rx: 3, fill: mix('#FAF8F3', C.lula, t) }, svg); el('rect', { x: x + 24, y: 6, width: 22, height: 24, rx: 3, fill: mix('#FAF8F3', C.bolso, t) }, svg); T(svg, x + 56, 27, nm, { size: 22, fill: C.soft }); });
+[-5, 0, 5, 10, 15].forEach(t => { el('line', { x1: X(t), x2: X(t), y1: top - 10, y2: H - bot + 6, stroke: t === 0 ? '#8A8579' : C.grid, 'stroke-width': t === 0 ? 2 : 1.5 }, svg);
+  T(svg, X(t), H - 12, sg(t, 0) + (t ? ' M' : ''), { size: 21, fill: C.muted, anchor: 'middle' }); });
+D.forEach((f, i) => {
+  const yc = top + paso * (i + 0.5) + (f.tot ? paso * 0.4 : 0);
+  if (f.tot) el('line', { x1: 0, x2: W, y1: yc - paso * 0.62, y2: yc - paso * 0.62, stroke: C.rule, 'stroke-width': 1.5 }, svg);
+  T(svg, lab - 18, yc + 8, f.nm, { size: 24, w: f.tot ? 800 : 500, fill: C.ink, anchor: 'end' });
+  [[f.d22, 0.25, -1], [f.d1, 0.55, 0], [f.d2, 1, 1]].forEach(([v, t, s]) => {
+    const col = mix('#FAF8F3', v >= 0 ? C.lula : C.bolso, t), y = yc + s * (bh + 3) - bh / 2, xa = X(Math.min(0, v)), xb = X(Math.max(0, v));
+    tip(el('rect', { x: xa, y, width: Math.max(2, xb - xa), height: bh, fill: col, rx: 2 }, svg), `<b>${f.nm}</b><br>2022: ${sg(f.d22)} M<br>1ª vuelta: ${sg(f.d1)} M<br>Balotaje: ${sg(f.d2)} M`);
+    if (t === 1) T(svg, v >= 0 ? xb + 8 : xa - 8, y + bh / 2 + 8, sg(v), { size: 21, w: 700, fill: v >= 0 ? C.lula : C.bolso, anchor: v >= 0 ? 'start' : 'end', halo: 5 });
+  });
+});
+
+});</script></body></html>

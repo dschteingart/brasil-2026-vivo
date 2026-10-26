@@ -1,0 +1,35 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La remontada vino sobre todo de los que habían anulado o no habían votado — El Atlas</title><meta name="description" content="A dónde fueron en el balotaje los votos de cada grupo de la primera vuelta, en %, y cuántos votos de diferencia le dejó cada grupo a Lula.">
+<meta property="og:title" content="La remontada vino sobre todo de los que habían anulado o no habían votado — El Atlas"><meta property="og:image" content="https://dschteingart.github.io/brasil-2026-vivo/balotaje/g03-transferencias.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css?v=3"></head>
+<body class="web"><div class="barra"><a href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">EL ATLAS · ELECCIONES BRASIL</a></div>
+<div class="marco"><div class="lienzo">
+<h1>La remontada vino sobre todo de los que habían anulado o no habían votado</h1><p class="sub">A dónde fueron en el balotaje los votos de cada grupo de la primera vuelta, en %, y cuántos votos de diferencia le dejó cada grupo a Lula.</p><div id="plot"></div>
+<div class="pie"><div class="nota"><b>Fuente:</b> estimación urna por urna de <a href="https://e26.pm.radio.am/#transferencia">e26.pm.radio.am</a> (regresión ecológica bayesiana sobre 357 mil boletines de urna, cada sección comparada con la misma sección en la 1ª vuelta; medianas nacionales) y TSE. Es una estimación, no una medición de votos individuales. Saldo: votos a Lula menos votos a Flávio. En total suman 4,9 millones; buena parte del resto de los 6,7 millones que se movió la diferencia viene de los votantes de Flávio que no lo repitieron (el 2%, contra 0% de los de Lula).</div><div class="firma"><b>El Atlas</b><span>Daniel Schteingart</span></div></div>
+</div></div>
+<div class="acciones"><a class="boton" href="g03-transferencias.png" download>Descargar PNG</a><a class="todos" href="https://dschteingart.github.io/el-atlas-charts/brasil-2026/">Ver todos los gráficos →</a></div>
+<script>window.WEB = true;</script><script src="base.js?v=3"></script><script>const D = [{"o": "Augusto Cury", "n": 3448478, "l": 54, "f": 34, "x": 12, "il": "53–55", "if_": "33–35", "s": 0.69}, {"o": "Renan Santos", "n": 2675850, "l": 48, "f": 45, "x": 7, "il": "47–49", "if_": "44–46", "s": 0.08}, {"o": "Ronaldo Caiado", "n": 2605056, "l": 46, "f": 50, "x": 4, "il": "45–47", "if_": "50–51", "s": -0.1}, {"o": "Romeu Zema", "n": 326485, "l": 23, "f": 77, "x": 0, "il": "20–25", "if_": "75–80", "s": -0.18}, {"o": "Otros candidatos", "n": 260641, "l": 79, "f": 20, "x": 1, "il": "75–82", "if_": "16–24", "s": 0.15}, {"o": "Blanco", "n": 2300710, "l": 78, "f": 22, "x": 0, "il": "77–79", "if_": "21–23", "s": 1.29}, {"o": "Nulo", "n": 3673899, "l": 58, "f": 14, "x": 28, "il": "58–59", "if_": "13–15", "s": 1.62}, {"o": "No votó", "n": 33479669, "l": 8, "f": 4, "x": 88, "il": "8–9", "if_": "4–4", "s": 1.34}];
+listo(() => {
+
+const { svg, W, H } = lienzo();
+const l = 250, bx1 = W - 230, top = 70, bot = 20, n = D.length, rh = (H - top - bot) / n, bh = rh * 0.56;
+const X = v => l + v / 100 * (bx1 - l);
+T(svg, l, 30, '→ Lula', { size: 22, w: 700, fill: C.lula }); T(svg, l + 110, 30, '→ Flávio', { size: 22, w: 700, fill: C.bolso });
+T(svg, l + 240, 30, 'Blanco, nulo o no votó', { size: 22, fill: C.muted });
+T(svg, W, 30, 'Saldo para Lula', { size: 22, w: 700, fill: C.soft, anchor: 'end' });
+D.forEach((d, i) => {
+  const y = top + rh * i + (rh - bh) / 2;
+  if (i === 5 || i === 7) el('line', { x1: 0, x2: W, y1: top + rh * i, y2: top + rh * i, stroke: C.rule, 'stroke-width': 2 }, svg);
+  T(svg, l - 18, y + bh / 2 - 4, d.o, { size: 24, w: 700, fill: C.ink, anchor: 'end' });
+  T(svg, l - 18, y + bh / 2 + 24, (d.n >= 1e6 ? fmt(d.n / 1e6) + ' millones' : fmt(d.n / 1e3, 0) + ' mil'), { size: 19, fill: C.muted, anchor: 'end' });
+  const seg = [[0, d.l, C.lula, '#fff'], [d.l, d.f, C.bolso, '#fff'], [d.l + d.f, 100 - d.l - d.f, '#D9D4C7', C.soft]];
+  seg.forEach(([a, w, col, tc], j) => {
+    if (w <= 0) return;
+    tip(el('rect', { x: X(a), y, width: X(a + w) - X(a), height: bh, fill: col }, svg),
+      `<b>${d.o}</b> (1ª vuelta)<br>→ Lula: ${d.l}% (80%: ${d.il})<br>→ Flávio: ${d.f}% (80%: ${d.if_})<br>Blanco, nulo o no votó: ${d.x}%`);
+    if (w >= 7) T(svg, X(a + w / 2), y + bh / 2 + 8, w + '%', { size: 22, w: 700, fill: tc, anchor: 'middle' });
+  });
+  T(svg, W, y + bh / 2 + 8, (d.s > 0 ? '+' : '−') + fmt(Math.abs(d.s), 2).replace(/0$/, '') + ' M', { size: 24, w: 700, fill: d.s > 0 ? C.lula : C.bolso, anchor: 'end' });
+});
+
+});</script></body></html>
